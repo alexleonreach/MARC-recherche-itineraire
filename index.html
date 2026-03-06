@@ -5,37 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>M'ARC Bus Gratuits</title>
     <style>
+        /* Supprime les marges par défaut */
         body, html { 
             margin: 0; 
             padding: 0; 
             height: 100%; 
             width: 100%; 
-            overflow: hidden; /* Empêche de scroller pour voir la barre cachée */
+            overflow: hidden; 
             background-color: #ffffff; 
         }
         
-        .iframe-container {
+        /* Conteneur principal */
+        .app-container {
             position: relative;
             width: 100%;
             height: 100%;
             overflow: hidden;
+            background-color: #ffffff;
+        }
+
+        /* Masque de sécurité blanc tout en haut */
+        .top-mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px; /* Petite marge de sécurité blanche */
+            background: white;
+            z-index: 10;
         }
 
         iframe {
             position: absolute;
-            /* L'ASTUCE : On remonte l'iframe de 40 pixels pour cacher la barre de titre */
-            top: -38px; 
+            /* On remonte de 45px pour masquer le menu Grist sur PC et Mobile */
+            top: -45px; 
             left: 0;
             width: 100%;
-            /* On rajoute ces 38px en bas pour ne pas perdre le bas du widget */
-            height: calc(100% + 38px); 
+            /* On compense la hauteur pour ne pas couper le bas du widget */
+            height: calc(100% + 45px); 
             border: none;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
 
-    <div class="iframe-container">
+    <div class="app-container">
+        <div class="top-mask"></div>
+        
         <iframe 
             src="https://grist.numerique.gouv.fr/o/docs/38bVq7YXzemR/MARC-Bus-public/p/19?embed=true" 
             allow="clipboard-read; clipboard-write"
