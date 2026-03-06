@@ -5,15 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>M'ARC Bus Gratuits</title>
     <style>
+        /* On garde l'écran propre et sans défilement parasite */
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #ffffff; }
+        
         .app-container { position: relative; width: 100%; height: 100%; overflow: hidden; background-color: #ffffff; }
+        
+        /* Masque blanc pour cacher le liseré résiduel en haut */
         .top-mask { position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: white; z-index: 10; }
+        
         iframe {
             position: absolute;
-            top: -45px; 
+            /* Ajustement : on passe de -45px à -38px pour ne plus manger le header */
+            top: -38px; 
             left: 0;
             width: 100%;
-            height: calc(100% + 45px); 
+            /* On ajuste la hauteur en conséquence */
+            height: calc(100% + 38px); 
             border: none;
             z-index: 1;
         }
@@ -26,14 +33,11 @@
     </div>
 
     <script>
-        // Bouclier anti-erreur iOS
-        window.onerror = function(msg) {
-            if (msg.indexOf("hover") > -1) return true;
-        };
-        const _oldAlert = window.alert;
+        /* Code épuré : on ne garde qu'une sécurité simple pour les alertes résiduelles 
+           sans les boucles de détection complexes qui bloquaient DDG */
         window.alert = function(msg) {
-            if (msg.indexOf("hover") > -1 || msg.indexOf("feature") > -1) return;
-            _oldAlert(msg);
+            if (msg.indexOf("hover") > -1) return true;
+            console.log("Alerte bloquée ou filtrée : ", msg);
         };
     </script>
 </body>
