@@ -1,183 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <script src="https://docs.getgrist.com/grist-plugin-api.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>M'ARC Bus gratuits - Recherche d'horaires</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-    body { background-color: #f8fafc; padding: 5px; color: #1e293b; }
-    .container { max-width: 500px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
-    
-    /* HEADER */
-    .header { background: #028090; padding: 10px 12px; display: flex; align-items: center; gap: 12px; }
-    .logo { height: 80px; width: auto; filter: brightness(0) invert(1); flex-shrink: 0; }
-    .header-text { display: flex; flex-direction: column; justify-content: center; }
-    .header h1 { font-size: 1.4rem; font-weight: 800; color: white; margin: 0; line-height: 1.1; }
-    .header p { font-size: 0.65rem; color: white; opacity: 0.85; margin-top: 4px; line-height: 1.2; font-weight: 400; }
-
-    /* RECHERCHE */
-    .search-box { padding: 10px 15px; background: #fff; border-bottom: 1px solid #f1f5f9; }
-    label { font-size: 8px; font-weight: 700; color: #64748b; text-transform: uppercase; display: block; margin-bottom: 2px; }
-    select { 
-      width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0; font-size: 16px; 
-      margin-bottom: 6px; background: #fff; color: #1e293b; appearance: none; -webkit-appearance: none; 
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 10px center; background-size: 1em;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
     
-    /* RÉSULTATS */
-    .results-area { padding: 5px 0 15px 0; }
-    .res-header { padding: 6px 15px; font-weight: 700; color: #0f172a; font-size: 0.85rem; text-align: center; background: #f1f5f9; margin-bottom: 8px; }
-    .section-title { 
-        margin: 15px 15px 6px 15px; 
-        font-weight: 800; 
-        color: #028090; 
-        font-size: 0.75rem; 
-        border-bottom: 2px solid #028090; 
-        width: calc(100% - 30px); /* Prend toute la largeur moins les marges */
-        padding-bottom: 2px; 
-        display: flex;
-        justify-content: space-between;
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, #028090 0%, #00A896 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
     }
-    .route-detail { font-weight: 500; color: #64748b; font-size: 0.7rem; }
     
-    .result-row { display: grid; grid-template-areas: "horaire ligne" "jours ."; grid-template-columns: 1fr auto; padding: 4px 15px; border-bottom: 1px solid #f8fafc; align-items: center; }
-    .col-time { grid-area: horaire; font-size: 0.85rem; font-weight: 700; color: #0f172a; }
-    .col-line { grid-area: ligne; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; color: #475569; }
-    .col-days { grid-area: jours; font-size: 0.7rem; color: #94a3b8; }
-    .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 5px; }
-    .dot-orange { background: #f59e0b; } .dot-turquoise { background: #06b6d4; } .dot-verte { background: #10b981; }
+    .header-info {
+      text-align: center;
+      color: white;
+      margin: 20px 0;
+      max-width: 500px;
+    }
     
-    .placeholder { text-align: center; color: #94a3b8; padding: 30px 15px; font-size: 0.8rem; }
-    .footer { padding: 10px 15px; }
-    .btn-reset { width: 100%; padding: 12px; background: #F0A202; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 0.85rem; }
+    .header-info h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .header-info p {
+      font-size: 0.95rem;
+      opacity: 0.95;
+      line-height: 1.4;
+    }
+    
+    .iframe-container {
+      width: 100%;
+      max-width: 500px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+    
+    iframe {
+      width: 100%;
+      height: 700px;
+      border: none;
+      display: block;
+    }
+    
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      color: white;
+      font-size: 0.85rem;
+      opacity: 0.9;
+      max-width: 500px;
+    }
+    
+    .footer a {
+      color: #F0A202;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    @media (max-width: 768px) {
+      .header-info h1 {
+        font-size: 1.5rem;
+      }
+      
+      iframe {
+        height: 600px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <img src="https://ardecherhonecoiron.fr/wp-content/uploads/2025/02/Logo-Mobilite-ARC-ac-base-line-360x270.png" class="logo">
-      <div class="header-text">
-        <h1>M'ARC Bus gratuits</h1>
-        <p>Un service de la Communauté de communes Ardèche Rhône Coiron</p>
-      </div>
-    </div>
-    
-    <div class="search-box">
-      <label>🚏 Départ</label>
-      <select id="depart"><option value="">Chargement...</option></select>
-      <label>🎯 Arrivée</label>
-      <select id="destination"><option value="">Choisir départ...</option></select>
-    </div>
-    
-    <div id="results" class="results-area">
-      <div class="placeholder">Sélectionnez votre itinéraire</div>
-    </div>
-    
-    <div class="footer">
-      <button class="btn-reset" onclick="nouvelleRecherche()">🔄 Nouvelle recherche</button>
-    </div>
+  <div class="header-info">
+    <h1>🚌 M'ARC Bus gratuits</h1>
+    <p>Recherchez vos horaires en quelques clics</p>
   </div>
-
-  <script>
-    let arretsData = {}, trips = {}, destinationsPossibles = {};
-    const selectDep = document.getElementById('depart'), selectDest = document.getElementById('destination'), resDiv = document.getElementById('results');
-
-    grist.ready({ requiredAccess: 'read' });
-
-    async function init() {
-      try {
-        const [tableArrets, tableHoraires] = await Promise.all([
-          grist.docApi.fetchTable('Liste_arrets'),
-          grist.docApi.fetchTable('Horaires')
-        ]);
-
-        tableArrets.id.forEach((id, i) => {
-          if (tableArrets.Arret[i]) {
-            arretsData[tableArrets.Arret[i]] = { stop_id: tableArrets.stop_id[i] };
-          }
-        });
-
-        tableHoraires.id.forEach((id, i) => {
-          const tId = tableHoraires.trip_id[i];
-          if (!trips[tId]) trips[tId] = [];
-          trips[tId].push({ stop_id: tableHoraires.stop_id[i], time: tableHoraires.arrival_time[i], jours: tableHoraires.jours[i] });
-        });
-
-        Object.keys(arretsData).forEach(nom => {
-          let dests = new Set();
-          const sId = arretsData[nom].stop_id;
-          Object.values(trips).forEach(stops => {
-            if (stops.some(s => s.stop_id === sId)) {
-              stops.forEach(s => {
-                const n = Object.keys(arretsData).find(k => arretsData[k].stop_id === s.stop_id);
-                if (n && n !== nom) dests.add(n);
-              });
-            }
-          });
-          destinationsPossibles[nom] = Array.from(dests).sort();
-        });
-
-        selectDep.innerHTML = '<option value="">-- Choisir Départ --</option>';
-        Object.keys(arretsData).sort().forEach(n => selectDep.appendChild(new Option(n, n)));
-        
-        selectDep.onchange = () => {
-          const nom = selectDep.value;
-          selectDest.innerHTML = '<option value="">-- Choisir Arrivée --</option>';
-          if (nom) destinationsPossibles[nom].forEach(d => selectDest.appendChild(new Option(d, d)));
-          resDiv.innerHTML = '<div class="placeholder">Sélectionnez une arrivée</div>';
-        };
-        
-        selectDest.onchange = calculerEtAfficher;
-      } catch (e) { resDiv.innerHTML = "Erreur de chargement"; }
-    }
-
-    function calculerEtAfficher() {
-      const depNom = selectDep.value, destNom = selectDest.value;
-      if (!depNom || !destNom) return;
-      const sId = arretsData[depNom].stop_id, dId = arretsData[destNom].stop_id;
-      
-      const trouver = (src, dst) => {
-        let r = [];
-        Object.keys(trips).forEach(tId => {
-          const s = trips[tId], iS = s.findIndex(x => x.stop_id === src), iD = s.findIndex(x => x.stop_id === dst);
-          if (iS !== -1 && iD !== -1 && iD > iS) {
-            const coul = tId.startsWith('O') ? 'orange' : tId.startsWith('T') ? 'turquoise' : 'verte';
-            r.push({ time: `${s[iS].time} → ${s[iD].time}`, raw: s[iS].time, line: coul, days: s[iS].jours });
-          }
-        });
-        return r.sort((a,b) => a.raw.localeCompare(b.raw));
-      }
-
-      const fmt = (l) => l.length ? l.map(x => `<div class="result-row"><div class="col-time">${x.time}</div><div class="col-line"><span class="dot dot-${x.line}"></span>Ligne ${x.line.charAt(0).toUpperCase()+x.line.slice(1)}</div><div class="col-days">${x.days}</div></div>`).join('') : '<div class="placeholder">Aucun trajet direct</div>';
-
-      resDiv.innerHTML = `
-        <div class="res-header">${depNom} ↔ ${destNom}</div>
-        
-        <div class="section-title">
-            <span>SENS ALLER</span>
-            <span class="route-detail">${depNom} → ${destNom}</span>
-        </div>
-        ${fmt(trouver(sId, dId))}
-        
-        <div style="height:35px"></div>
-        
-        <div class="section-title">
-            <span>SENS RETOUR</span>
-            <span class="route-detail">${destNom} → ${depNom}</span>
-        </div>
-        ${fmt(trouver(dId, sId))}
-      `;
-    }
-
-    function nouvelleRecherche() {
-      selectDep.value = ""; selectDest.innerHTML = '<option value="">Choisir départ...</option>';
-      resDiv.innerHTML = '<div class="placeholder">Sélectionnez votre itinéraire</div>';
-    }
-
-    init();
-  </script>
+  
+  <div class="iframe-container">
+    <iframe 
+      src="https://grist.numerique.gouv.fr/o/docs/38bVq7YXzemR/MARC-Bus-public/p/19"
+      title="Recherche d'horaires M'ARC Bus"
+      loading="lazy">
+    </iframe>
+  </div>
+  
+  <div class="footer">
+    <p>
+      Service proposé par la 
+      <a href="https://ardecherhonecoiron.fr" target="_blank">
+        Communauté de communes Ardèche Rhône Coiron
+      </a>
+    </p>
+  </div>
 </body>
 </html>
