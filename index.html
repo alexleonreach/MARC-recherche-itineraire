@@ -5,17 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>M'ARC Bus Gratuits</title>
     <style>
-        /* Supprime les marges pour que le widget prenne tout l'écran */
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            background-color: #f8fafc;
-        }
-
-        /* L'iframe qui appelle votre Grist en mode "Embed" */
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background-color: #ffffff; }
+        
+        /* On force l'iframe à être un peu plus haute pour masquer d'éventuels résidus de barre de menu */
         iframe {
             position: absolute;
             top: 0;
@@ -29,7 +21,7 @@
 <body>
 
     <iframe 
-        src="https://grist.numerique.gouv.fr/o/docs/38bVq7YXzemR/MARC-Bus-public/p/19?embed=true" 
+        src="https://grist.numerique.gouv.fr/o/docs/38bVq7YXzemR/MARC-Bus-public/p/19?embed=true&hide-sidebars=1&title=0" 
         allow="clipboard-read; clipboard-write"
         loading="lazy">
     </iframe>
